@@ -3,21 +3,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Winner</title>
   <style>
     body {
-      background: #333;
-      color: #fff;
+      margin: 0;
+      background: #0f0f1a;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
-      font-family: Arial;
-      font-size: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.25rem;
+    }
+    button {
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background-color: gold;
+      border: none;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  Game Over! Thanks for playing 🕹️
+  <h1 id="winner-text">Loading...</h1>
+  <p id="detail"></p>
+  <button onclick="window.location.href='index.html'">Play Again 🔁</button>
+  <script>
+    const result = localStorage.getItem("gameResult");
+    const user = localStorage.getItem("userChoice");
+    const comp = localStorage.getItem("computerChoice");
+
+    const winnerText = document.getElementById("winner-text");
+    const detail = document.getElementById("detail");
+
+    if (result === 'win') winnerText.textContent = "🎉 You Win!";
+    else if (result === 'lose') winnerText.textContent = "😢 You Lose!";
+    else winnerText.textContent = "🤝 It's a Draw!";
+
+    detail.textContent = `You chose ${user}, Bot chose ${comp}.`;
+  </script>
 </body>
 </html>
