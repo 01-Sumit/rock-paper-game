@@ -1,31 +1,34 @@
-function playGame(userChoice) {
-  const computerChoice = getComputerChoice();
-  const result = getResult(userChoice, computerChoice);
-  showResult(userChoice, computerChoice, result);
+document.addEventListener("DOMContentLoaded", () => {
+  const choices = document.querySelectorAll('.choice');
 
-  setTimeout(() => {
-    // Redirect to a new page after 1.5 seconds
-    window.location.href = 'winner.html'; // Change this to your desired page
-  }, 1500);
-}
+  choices.forEach(button => {
+    button.addEventListener('click', () => {
+      const userChoice = button.getAttribute('data-choice');
+      const computerChoice = getComputerChoice();
+      const result = getResult(userChoice, computerChoice);
 
-function showResult(user, computer, result) {
-  let message = `You chose ${user} and bot chose ${computer}.`;
+      // Store in localStorage
+      localStorage.setItem("gameResult", result);
+      localStorage.setItem("userChoice", userChoice);
+      localStorage.setItem("computerChoice", computerChoice);
 
-  if (result === 'win') {
-    userScore++;
-    message += ' 🎉 You win!';
-  } else if (result === 'lose') {
-    computerScore++;
-    message += ' 😢 You lose!';
-  } else {
-    message += ' 🤝 It\'s a draw!';
+      // Redirect to loading
+      window.location.href = 'loading.html';
+    });
+  });
+
+  function getComputerChoice() {
+    const options = ['rock', 'paper', 'scissors'];
+    return options[Math.floor(Math.random() * options.length)];
   }
 
-  userScoreSpan.textContent = userScore;
-  computerScoreSpan.textContent = computerScore;
-  resultDiv.textContent = message;
-  resultDiv.classList.remove('animate');
-  void resultDiv.offsetWidth;
-  resultDiv.classList.add('animate');
-}
+  function getResult(user, computer) {
+    if (user === computer) return 'draw';
+    if ((user === 'rock' && computer === 'scissors') ||
+        (user === 'paper' && computer === 'rock') ||
+        (user === 'scissors' && computer === 'paper')) {
+      return 'win';
+    }
+    return 'lose';
+  }
+});
